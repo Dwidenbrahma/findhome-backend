@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema({
   house: { type: mongoose.Schema.Types.ObjectId, ref: "Home", required: true },
   renter: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-  guest: { type: String, default: [] },
+  //guest: { type: String, default: [] },
   totalPrice: { type: Number, required: true },
   status: {
     type: String,
@@ -17,4 +17,4 @@ const bookingSchema = new mongoose.Schema({
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
-module.exports = Booking;
+export default Booking;

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const paymentSchema = new mongoose.Schema({
   booking: {
@@ -22,4 +22,4 @@ const paymentSchema = new mongoose.Schema({
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);
-module.exports = Payment;
+export default Payment;

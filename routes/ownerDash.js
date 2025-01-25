@@ -1,10 +1,12 @@
-require("dotenv").config();
-const express = require("express");
+// file: routes/ownerDash.js
+import express from "express";
+import Owner from "../models/owner.js";
+import { verifyOwnerToken } from "../controllers/jwtOwnerHelper.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const ownerDash = express.Router();
-//const User = require("../models/user");
-const Owner = require("../models/owner");
-//const Bookings = require("../models/bookingScema");
-const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
 
 const authenticateOwner = (req, res, next) => {
   const ownerToken = req.header("Authorization")?.replace("Bearer ", "");
@@ -45,4 +47,4 @@ ownerDash.get("/owner/dash", authenticateOwner, async (req, res) => {
   }
 });
 
-module.exports = ownerDash;
+export default ownerDash;

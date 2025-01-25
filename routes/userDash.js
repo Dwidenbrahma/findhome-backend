@@ -1,10 +1,10 @@
-const express = require("express");
-const { verifyToken } = require("../controllers/jwtHelper");
-require("dotenv").config();
+// file: routes/userDash.js
+import express from "express";
+import { verifyToken } from "../controllers/jwtHelper.js";
+import User from "../models/user.js";
+import Booking from "../models/bookingScema.js";
+
 const userDash = express.Router();
-const User = require("../models/user");
-const Booking = require("../models/bookingScema");
-//const Home = require("../models/homeSchema");
 
 // Middleware to authenticate the token
 const authenticateToken = (req, res, next) => {
@@ -44,4 +44,4 @@ userDash.get("/user/dashboard", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = userDash;
+export default userDash;

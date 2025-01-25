@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const homeSchema = new mongoose.Schema(
   {
@@ -31,7 +31,7 @@ const homeSchema = new mongoose.Schema(
     reviews: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        rating: { type: Number, required: true },
+        // rating: { type: Number, required: true },
         comment: { type: String },
         date: { type: Date, default: Date.now },
       },
@@ -41,4 +41,4 @@ const homeSchema = new mongoose.Schema(
 );
 
 const Home = mongoose.model("Home", homeSchema);
-module.exports = Home;
+export default Home;
