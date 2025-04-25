@@ -1,7 +1,9 @@
-const express = require("express");
+// file: routes/homePost.js
+import express from "express";
+import homeUpload from "../middleware/homeUpload.js";
+import Home from "../models/homeSchema.js";
+
 const homePost = express.Router();
-const homeUpload = require("../middleware/homeUpload");
-const Home = require("../models/homeSchema");
 
 homePost.post("/posthome", (req, res) => {
   homeUpload(req, res, async (err) => {
@@ -71,7 +73,7 @@ homePost.post("/posthome", (req, res) => {
 
       // Handle file paths for images
       const images = req.files ? req.files.map((file) => file.path) : [];
-      console.log(amenities);
+
       const newHome = new Home({
         title,
         description,
@@ -87,11 +89,9 @@ homePost.post("/posthome", (req, res) => {
         bathrooms: Number(bathrooms),
         guests: Number(guests),
         amenities,
-
         images,
         owner: owner_id,
         availability,
-        // Check if coordinates exist
       });
 
       await newHome.save();
@@ -106,4 +106,4 @@ homePost.post("/posthome", (req, res) => {
   });
 });
 
-module.exports = homePost;
+export default homePost;

@@ -1,9 +1,13 @@
-const express = require("express");
+// file: routes/login.js
+import express from "express";
+import User from "../models/user.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const login = express.Router();
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 login.post("/login", async (req, res) => {
   try {
@@ -30,4 +34,4 @@ login.post("/login", async (req, res) => {
   }
 });
 
-module.exports = login;
+export default login;

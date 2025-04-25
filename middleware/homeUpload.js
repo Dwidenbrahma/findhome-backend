@@ -1,5 +1,6 @@
-const multer = require("multer");
-const path = require("path");
+// file: middleware/homeUpload.js
+import multer from "multer";
+import path from "path";
 
 // Function to check file type
 function checkFileType(file, cb) {
@@ -36,4 +37,4 @@ const homeUpload = multer({
   },
 }).array("images", 10);
 
-module.exports = homeUpload;
+export default homeUpload;

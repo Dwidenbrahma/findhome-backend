@@ -3,9 +3,15 @@
   "version": "1.0.0",
   "description": "just to supply data to find home react ",
   "main": "server.js",
+<<<<<<< HEAD
   "start": "npx nodemon server.js",
+=======
+  "type": "module",
+>>>>>>> 850cb95c587f3b84d8a18e7a083f381ee9c3b275
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js",
+    "build": "npm install --prefix ./client && npm run build --prefix ./client && npm install"
   },
   "author": "Dwiden Brahma",
   "license": "ISC",

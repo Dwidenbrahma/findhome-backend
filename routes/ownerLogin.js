@@ -1,9 +1,13 @@
-const express = require("express");
-const jwtOwner = require("jsonwebtoken");
+// file: routes/ownerLogin.js
+import express from "express";
+import jwtOwner from "jsonwebtoken";
+import Owner from "../models/owner.js";
+import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const OwnerLogin = express.Router();
-const Owner = require("../models/owner");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
 
 OwnerLogin.post("/owner/login", async (req, res) => {
   try {
@@ -35,4 +39,4 @@ OwnerLogin.post("/owner/login", async (req, res) => {
   }
 });
 
-module.exports = OwnerLogin;
+export default OwnerLogin;
