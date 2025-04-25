@@ -1,17 +1,21 @@
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", require: true },
+  user_email: { type: String, require: true },
+
+  property_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Home",
+    require: true,
+  },
   booking: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Booking",
-    required: true,
+    required: false,
   },
   amount: { type: Number, required: true },
-  paymentMethod: {
-    type: String,
-    enum: ["Credit Card", "PayPal", "Bank Transfer"],
-    required: true,
-  },
+
   status: {
     type: String,
     enum: ["Pending", "Completed", "Failed"],

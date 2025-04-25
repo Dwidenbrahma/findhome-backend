@@ -5,12 +5,19 @@ const bookingSchema = new mongoose.Schema({
   renter: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-  guest: { type: String, default: [] },
+  guests: [
+    {
+      name: { type: String, required: true },
+      age: { type: Number, required: true },
+    },
+  ],
   totalPrice: { type: Number, required: true },
+  SpecialRequest: { type: String, required: false },
   status: {
     type: String,
     enum: ["Pending", "Confirmed", "Cancelled"],
     default: "Pending",
+    required: false,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

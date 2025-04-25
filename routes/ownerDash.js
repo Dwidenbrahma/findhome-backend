@@ -4,6 +4,7 @@ const ownerDash = express.Router();
 //const User = require("../models/user");
 const Owner = require("../models/owner");
 //const Bookings = require("../models/bookingScema");
+const Home = require("../models/homeSchema");
 const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
 
 const authenticateOwner = (req, res, next) => {
@@ -36,7 +37,9 @@ ownerDash.get("/owner/dash", authenticateOwner, async (req, res) => {
       return res.status(400).json({ message: "No such user exists!" });
     }
 
-    res.status(200).json(admin);
+    const totalProperties = await Home.countDocuments({ owner: ownerId });
+
+    res.status(200).json({ admin, totalProperties });
   } catch (err) {
     console.error("Error fetching owner data:", err); // log the error for better debugging
     res

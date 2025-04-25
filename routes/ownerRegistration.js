@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const ownerRegistraion = express.Router();
 const Owner = require("../models/owner");
 const ownerprofile = require("../middleware/ownerProfileUpload");
@@ -34,6 +33,7 @@ ownerRegistraion.post(
       });
 
       newOwner.save();
+
       res.status(200).json({ message: "Success" });
     } catch (err) {
       res.status(500).json({ messgae: `Internal Server Error ${err}` });

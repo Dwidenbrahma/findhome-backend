@@ -21,11 +21,13 @@ homePost.post("/posthome", (req, res) => {
         state,
         country,
         type,
+        transactionType,
+        duration,
         price,
         bedrooms,
         bathrooms,
         guests,
-        amenities = "",
+        amenities,
 
         owner_id,
         availability = null,
@@ -51,6 +53,22 @@ homePost.post("/posthome", (req, res) => {
           .json({ message: "Please fill in all required fields." });
       }
 
+      if (type === "Hotel") {
+        if (transactionType && transactionType !== "rent") {
+          return res
+            .status(400)
+            .json({ message: "Hotels can only be rented." });
+        }
+        // If it's a hotel, set default transactionType to "rent"
+        transactionType = "rent";
+      }
+
+      if (transactionType === "rent" && !duration) {
+        return res
+          .status(400)
+          .json({ message: "Duration is required for rental properties." });
+      }
+
       // Handle file paths for images
       const images = req.files ? req.files.map((file) => file.path) : [];
       console.log(amenities);
@@ -62,6 +80,8 @@ homePost.post("/posthome", (req, res) => {
         state,
         country,
         type,
+        transactionType: transactionType || null, // Ensure transactionType is set to null if not provided
+        duration: duration || null,
         price: Number(price),
         bedrooms: Number(bedrooms),
         bathrooms: Number(bathrooms),
