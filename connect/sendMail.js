@@ -1,4 +1,8 @@
-import nodemailer from "nodemailer";
+// sendMail.js
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+
+const nodemailer = require("nodemailer");
 import dotenv from "dotenv";
 
 dotenv.config();
