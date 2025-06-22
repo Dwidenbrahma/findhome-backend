@@ -7,11 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const ownerDash = express.Router();
-//const User = require("../models/user");
-const Owner = require("../models/owner");
-//const Bookings = require("../models/bookingScema");
-const Home = require("../models/homeSchema");
-const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
 
 const authenticateOwner = (req, res, next) => {
   const ownerToken = req.header("Authorization")?.replace("Bearer ", "");
