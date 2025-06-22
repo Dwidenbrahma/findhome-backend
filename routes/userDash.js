@@ -5,8 +5,6 @@ import User from "../models/user.js";
 import Booking from "../models/bookingScema.js";
 
 const userDash = express.Router();
-const User = require("../models/user");
-const Booking = require("../models/bookingScema");
 
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -28,9 +26,9 @@ const authenticateToken = (req, res, next) => {
 
 userDash.get("/user/dashboard", authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId; // Access user_id from decoded token
+    const userId = req.user.userId;
 
-    const user = await User.findOne({ _id: userId }); // Query using user_id
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -38,7 +36,7 @@ userDash.get("/user/dashboard", authenticateToken, async (req, res) => {
 
     const bookings = await Booking.find({ renter: userId }).populate("house");
 
-    res.status(200).json({ user, bookings }); // Return user details
+    res.status(200).json({ user, bookings });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
