@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const Favorite = new mongoose.Schema({
+const FavoriteSchema = new mongoose.Schema({
   property_id: { type: mongoose.Schema.Types.ObjectId, ref: "Home" },
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
-const Fav = mongoose.model("Favorite", Favorite);
-module.exports = Fav;
+const Fav = mongoose.model("Favorite", FavoriteSchema);
+
+export default Fav;

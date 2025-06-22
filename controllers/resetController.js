@@ -1,11 +1,13 @@
-const User = require("../models/user");
-const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
+import User from "../models/user.js";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Forgot Password
-exports.forgotPassword = async (req, res) => {
+export const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -20,28 +22,29 @@ exports.forgotPassword = async (req, res) => {
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
+
     user.resetPasswordToken = resetTokenHash;
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes from now
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
     await user.save();
 
-    // Create reset URL
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`; // adjust for frontend URL
+    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
-    // Setup nodemailer transport
     const transporter = nodemailer.createTransport({
-      service: "gmail", // or use a custom SMTP server
+      service: "gmail",
       auth: {
-        user: process.env.GMAIL_NAME, // your email
-        pass: process.env.APP_PASS_GOOGLE, // your email password or app password
+        user: process.env.GMAIL_NAME,
+        pass: process.env.APP_PASS_GOOGLE,
       },
     });
-    // Send email
+
     await transporter.sendMail({
       to: user.email,
       subject: "Password Reset Request",
-      html: `<p>You requested a password reset.</p>
-             <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 15 minutes.</p>`,
+      html: `
+        <p>You requested a password reset.</p>
+        <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 15 minutes.</p>
+      `,
     });
 
     res.status(200).json({ message: "Reset email sent" });
@@ -52,7 +55,7 @@ exports.forgotPassword = async (req, res) => {
 };
 
 // Reset Password
-exports.resetPassword = async (req, res) => {
+export const resetPassword = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
@@ -70,11 +73,9 @@ exports.resetPassword = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "Invalid or expired token" });
 
-    // Hash new password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    // Clear reset token fields
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 

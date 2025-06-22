@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
+import Home from "../models/homeSchema.js";
+
 const removeProperty = express.Router();
-const Home = require("../models/homeSchema");
 
 removeProperty.delete("/owner/delete/:id", async (req, res) => {
   const houseId = req.params.id;
@@ -21,4 +22,4 @@ removeProperty.delete("/owner/delete/:id", async (req, res) => {
   }
 });
 
-module.exports = removeProperty;
+export default removeProperty;

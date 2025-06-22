@@ -1,11 +1,13 @@
-const Owner = require("../models/owner");
-const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
+import Owner from "../models/owner.js";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Forgot Password
-exports.forgotPasswordOwner = async (req, res) => {
+export const forgotPasswordOwner = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -18,30 +20,33 @@ exports.forgotPasswordOwner = async (req, res) => {
     // Hash token and save to database
     const resetTokenHash = crypto
       .createHash("sha256")
-      .update(resetToken)
+      .update(OwnerResetToken)
       .digest("hex");
+
     user.resetPasswordTokenOwner = resetTokenHash;
-    user.resetPasswordExpireOwner = Date.now() + 15 * 60 * 1000; // 15 minutes from now
+    user.resetPasswordExpireOwner = Date.now() + 15 * 60 * 1000;
 
     await user.save();
 
-    // Create reset URL
-    const resetUrl = `http://localhost:5173/owner/reset-password/${OwnerResetToken}`; // adjust for frontend URL
+    // Reset URL
+    const resetUrl = `http://localhost:5173/owner/reset-password/${OwnerResetToken}`;
 
-    // Setup nodemailer transport
+    // Email setup
     const transporter = nodemailer.createTransport({
-      service: "gmail", // or use a custom SMTP server
+      service: "gmail",
       auth: {
-        user: process.env.GMAIL_NAME, // your email
-        pass: process.env.APP_PASS_GOOGLE, // your email password or app password
+        user: process.env.GMAIL_NAME,
+        pass: process.env.APP_PASS_GOOGLE,
       },
     });
-    // Send email
+
     await transporter.sendMail({
       to: user.email,
       subject: "Password Reset Request",
-      html: `<p>You requested a password reset.</p>
-             <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 15 minutes.</p>`,
+      html: `
+        <p>You requested a password reset.</p>
+        <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 15 minutes.</p>
+      `,
     });
 
     res.status(200).json({ message: "Reset email sent" });
@@ -52,7 +57,7 @@ exports.forgotPasswordOwner = async (req, res) => {
 };
 
 // Reset Password
-exports.resetPasswordOwner = async (req, res) => {
+export const resetPasswordOwner = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
@@ -67,14 +72,13 @@ exports.resetPasswordOwner = async (req, res) => {
       resetPasswordExpireOwner: { $gt: Date.now() },
     });
 
-    if (!user)
+    if (!user) {
       return res.status(400).json({ message: "Invalid or expired token" });
+    }
 
-    // Hash new password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    // Clear reset token fields
     user.resetPasswordTokenOwner = undefined;
     user.resetPasswordExpireOwner = undefined;
 

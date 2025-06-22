@@ -1,5 +1,5 @@
-const multer = require("multer");
-const path = require("path");
+import multer from "multer";
+import path from "path";
 
 // Function to check file type
 function checkFileType(file, cb) {
@@ -10,7 +10,7 @@ function checkFileType(file, cb) {
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb("Error: Images Only!");
+    cb(new Error("Error: Images Only!"));
   }
 }
 
@@ -30,10 +30,10 @@ const homeStorage = multer.diskStorage({
 // Multer upload configuration
 const panoramicView = multer({
   storage: homeStorage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // Limit file size to 10MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // Limit file size to 50MB
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   },
 }).array("panoramic", 10);
 
-module.exports = panoramicView;
+export default panoramicView;

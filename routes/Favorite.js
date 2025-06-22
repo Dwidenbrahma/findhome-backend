@@ -1,8 +1,10 @@
-const express = require("express");
-const favorite = express.Router();
-const Fav = require("../models/favorite");
-const { verifyToken } = require("../controllers/jwtHelper");
+import express from "express";
+import Fav from "../models/favorite.js";
+import { verifyToken } from "../controllers/jwtHelper.js";
 
+const favorite = express.Router();
+
+// Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
@@ -13,18 +15,19 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = verifyToken(token); // Decode the JWT token
-    req.user = decoded; // Attach the decoded user data (including userId) to the request object
-    next(); // Proceed to the next middleware or route handler
+    const decoded = verifyToken(token);
+    req.user = decoded;
+    next();
   } catch (err) {
     return res.status(403).json({ message: "Invalid or expired token" });
   }
 };
 
+// Route to add a property to favorites
 favorite.post("/favorite", authenticateToken, async (req, res) => {
   try {
-    const { propertyId } = req.body; // Get propertyId from the request body
-    const userId = req.user.userId; // Extract userId from the decoded token (attached in authenticateToken)
+    const { propertyId } = req.body;
+    const userId = req.user.userId;
 
     if (!userId) {
       return res.status(400).json({ message: "User ID not found in token" });
@@ -43,4 +46,4 @@ favorite.post("/favorite", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = favorite;
+export default favorite;

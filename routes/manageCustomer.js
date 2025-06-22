@@ -1,14 +1,15 @@
-const express = require("express");
-const manageCustomer = express.Router();
-const Booking = require("../models/bookingScema");
-const Home = require("../models/homeSchema"); // Make sure it's not Booking!
-const User = require("../models/user");
-const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
+import express from "express";
+import Booking from "../models/bookingScema.js";
+import Home from "../models/homeSchema.js";
+import User from "../models/user.js";
+import { verifyOwnerToken } from "../controllers/jwtOwnerHelper.js";
 
-// Middleware
+const manageCustomer = express.Router();
+
+// Middleware to authenticate owner
 const authenticateOwner = (req, res, next) => {
   const ownerToken = req.header("Authorization")?.replace("Bearer ", "");
-  console.log(ownerToken);
+  console.log("Token:", ownerToken);
 
   if (!ownerToken) {
     return res
@@ -21,38 +22,34 @@ const authenticateOwner = (req, res, next) => {
     req.owner = decode;
     next();
   } catch (err) {
-    console.error("Token verification failed:", err); // log the error for better debugging
+    console.error("Token verification failed:", err);
     res
       .status(500)
       .json({ message: "Internal Server Error", error: err.message });
   }
 };
 
-// GET /manage route
+// GET route to manage customer bookings
 manageCustomer.get("/owner/manage", authenticateOwner, async (req, res) => {
   try {
     const ownerId = req.owner.owner_id;
 
-    // Ensure you're using the correct field for the owner in the Home schema
-    const homes = await Home.find({ owner: ownerId }); // Fixed field name from ownerId to owner
+    const homes = await Home.find({ owner: ownerId });
     const homeIds = homes.map((home) => home._id);
 
     const bookings = await Booking.find({ house: { $in: homeIds } });
-    console.log("Bookings:", bookings); // Check if bookings are fetched properly
 
     const responseData = [];
 
-    // Loop through bookings to fetch user and home details
     for (const booking of bookings) {
-      const user = await User.findById(booking.renter); // Make sure to use `renter` instead of `userId`
-
+      const user = await User.findById(booking.renter);
       const home = homes.find((h) => h._id.equals(booking.house));
 
       if (user && home) {
         responseData.push({
           customerName: user.name,
           customerEmail: user.email,
-          totalAmount: booking.totalPrice, // Correctly use totalPrice from booking
+          totalAmount: booking.totalPrice,
           propertyTitle: home.title || `${home.location}, ${home.type}`,
           guests: booking.guests,
         });
@@ -61,9 +58,9 @@ manageCustomer.get("/owner/manage", authenticateOwner, async (req, res) => {
 
     res.json(responseData);
   } catch (err) {
-    console.error("Error in /manage route:", err);
+    console.error("Error in /owner/manage route:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-module.exports = manageCustomer;
+export default manageCustomer;

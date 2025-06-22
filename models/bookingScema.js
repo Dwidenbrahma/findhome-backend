@@ -5,16 +5,12 @@ const bookingSchema = new mongoose.Schema({
   renter: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-<<<<<<< HEAD
   guests: [
     {
       name: { type: String, required: true },
       age: { type: Number, required: true },
     },
   ],
-=======
-  //guest: { type: String, default: [] },
->>>>>>> 850cb95c587f3b84d8a18e7a083f381ee9c3b275
   totalPrice: { type: Number, required: true },
   SpecialRequest: { type: String, required: false },
   status: {

@@ -1,8 +1,7 @@
-// --- BACKEND (Express + MongoDB PATCH Route for Single Field Update) ---
+import express from "express";
+import Home from "../models/homeSchema.js";
 
-const express = require("express");
 const homeUpdate = express.Router();
-const Home = require("../models/homeSchema");
 
 homeUpdate.patch("/owner/update/:id", async (req, res) => {
   try {
@@ -40,13 +39,14 @@ homeUpdate.patch("/owner/update/:id", async (req, res) => {
       return res.status(404).json({ message: "Property not found." });
     }
 
-    res
-      .status(200)
-      .json({ message: `${field} updated`, updatedFieldValue: updated[field] });
+    res.status(200).json({
+      message: `${field} updated`,
+      updatedFieldValue: updated[field],
+    });
   } catch (err) {
     console.error("Update error:", err);
     res.status(500).json({ message: "Update failed" });
   }
 });
 
-module.exports = homeUpdate;
+export default homeUpdate;

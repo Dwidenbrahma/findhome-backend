@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
+import Property from "../models/propertySchema.js";
+
 const propertyBooking = express.Router();
-const Property = require("../models/propertySchema");
 
 propertyBooking.post("/property/book", async (req, res) => {
   try {
@@ -14,7 +15,6 @@ propertyBooking.post("/property/book", async (req, res) => {
       duration,
       moveInDate,
       specialRequests,
-
       contactName,
       termsAgreed,
     } = req.body;
@@ -22,10 +22,9 @@ propertyBooking.post("/property/book", async (req, res) => {
     const newPropertyBook = new Property({
       property_id: propertyId,
       buyer_id,
-      requestType: requestType.toLowerCase(), // Schema expects lowercase
-      duration: duration ? `${duration.toLowerCase()}-term` : null, // like short-term, medium-term, etc.
+      requestType: requestType.toLowerCase(),
+      duration: duration ? `${duration.toLowerCase()}-term` : null,
       moveInData: moveInDate,
-
       specialRequest: specialRequests || "",
       budget: budget || 0,
       termAgree: termsAgreed,
@@ -47,4 +46,4 @@ propertyBooking.post("/property/book", async (req, res) => {
   }
 });
 
-module.exports = propertyBooking;
+export default propertyBooking;

@@ -1,7 +1,8 @@
-const express = require("express");
+import express from "express";
+import Fav from "../models/favorite.js";
+import { verifyToken } from "../controllers/jwtHelper.js";
+
 const checkWishList = express.Router();
-const Fav = require("../models/favorite");
-const { verifyToken } = require("../controllers/jwtHelper");
 
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -23,19 +24,16 @@ const authenticateToken = (req, res, next) => {
 
 checkWishList.get("/find-wish-list", authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId; // Use the userId from the decoded token
+    const userId = req.user.userId;
 
-    // Find all favorite entries for the user
     const favorites = await Fav.find({ user_id: userId });
 
-    // Calculate the number of properties in the wishlist
     const wishlistCount = favorites.length;
-
     const propertyIds = favorites.map((fav) => fav.property_id);
 
     res.status(200).json({
-      wishlistCount, // Send the count of wishlist items
-      propertyIds, // Send the list of property IDs
+      wishlistCount,
+      propertyIds,
     });
   } catch (err) {
     console.error(err);
@@ -43,4 +41,4 @@ checkWishList.get("/find-wish-list", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = checkWishList;
+export default checkWishList;

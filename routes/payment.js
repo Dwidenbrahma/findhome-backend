@@ -1,21 +1,26 @@
-const express = require("express");
-const Stripe = require("stripe");
-const jwt = require("jsonwebtoken");
-const Payment = require("../models/paymentSchema");
-require("dotenv").config();
+import express from "express";
+import Stripe from "stripe";
+import jwt from "jsonwebtoken";
+import Payment from "../models/paymentSchema.js";
+import dotenv from "dotenv";
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const payment = express.Router();
 
 payment.post("/payment", async (req, res) => {
   console.log(req.body);
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ message: "Missing token" });
+    if (!authHeader) {
+      return res.status(401).json({ message: "Missing token" });
+    }
 
     const token = authHeader.startsWith("Bearer ")
       ? authHeader.slice(7)
       : authHeader;
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const { amount, property_id, user_email } = req.body;
@@ -48,4 +53,4 @@ payment.post("/payment", async (req, res) => {
   }
 });
 
-module.exports = payment;
+export default payment;

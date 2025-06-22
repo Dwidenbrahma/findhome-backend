@@ -1,11 +1,12 @@
-const express = require("express");
-const resetPassOwner = express.Router();
-const {
+import express from "express";
+import {
   forgotPasswordOwner,
   resetPasswordOwner,
-} = require("../controllers/ownerReset");
+} from "../controllers/ownerReset.js";
+
+const resetPassOwner = express.Router();
 
 resetPassOwner.post("/forgot-password", forgotPasswordOwner);
 resetPassOwner.post("/reset-password/:token", resetPasswordOwner);
 
-module.exports = resetPassOwner;
+export default resetPassOwner;

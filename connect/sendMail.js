@@ -1,23 +1,25 @@
-const nodemailer = require("nodemailer");
-require("dotenv").config();
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Create a transporter using SMTP or other services
 const transporter = nodemailer.createTransport({
-  service: "gmail", // or use a custom SMTP server
+  service: "gmail",
   auth: {
-    user: process.env.GMAIL_NAME, // your email
-    pass: process.env.APP_PASS_GOOGLE, // your email password or app password
+    user: process.env.GMAIL_NAME,
+    pass: process.env.APP_PASS_GOOGLE,
   },
 });
 
 // Function to send email
-const sendEmail = (to, subject, text, html) => {
+export const sendEmail = (to, subject, text, html) => {
   const mailOptions = {
-    from: process.env.GMAIL_NAME, // sender address
-    to: to, // list of recipients
-    subject: subject, // Subject line
-    text: text, // plain text body
-    html: html, // HTML body
+    from: process.env.GMAIL_NAME,
+    to,
+    subject,
+    text,
+    html,
   };
 
   return new Promise((resolve, reject) => {
@@ -30,5 +32,3 @@ const sendEmail = (to, subject, text, html) => {
     });
   });
 };
-
-module.exports = { sendEmail };

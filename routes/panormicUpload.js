@@ -1,6 +1,7 @@
-const express = require("express");
-const panoramic = require("../middleware/panoramicUpload");
-const Home = require("../models/homeSchema");
+import express from "express";
+import panoramic from "../middleware/panoramicUpload.js";
+import Home from "../models/homeSchema.js";
+
 const panoramicView = express.Router();
 
 panoramicView.patch("/owner/panoramic/:id", panoramic, async (req, res) => {
@@ -14,23 +15,18 @@ panoramicView.patch("/owner/panoramic/:id", panoramic, async (req, res) => {
       return res.status(404).json({ message: "Home not found" });
     }
 
-    // Check if files were uploaded
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: "No files uploaded" });
     }
 
-    // Extract file paths from uploaded files
-    const imagePaths = req.files.map((file) => file.path); // Adjust if needed
+    const imagePaths = req.files.map((file) => file.path);
 
-    // Ensure that `panoramic` field exists and is initialized as an array
     if (!Array.isArray(home.panoramic)) {
       home.panoramic = [];
     }
 
-    // Append new panoramic images
     home.panoramic.push(...imagePaths);
 
-    // Save updated home document
     await home.save();
 
     res.status(200).json({
@@ -43,4 +39,4 @@ panoramicView.patch("/owner/panoramic/:id", panoramic, async (req, res) => {
   }
 });
 
-module.exports = panoramicView;
+export default panoramicView;

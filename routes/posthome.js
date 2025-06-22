@@ -82,13 +82,10 @@ homePost.post("/posthome", (req, res) => {
       // Handle file paths for images (assuming images are uploaded)
       const images = req.files ? req.files.map((file) => file.path) : [];
 
-<<<<<<< HEAD
       // Log amenities to check the structure
       console.log("Amenities:", amenities);
 
       // Create new Home instance
-=======
->>>>>>> 1d21ac1fcc12929bc3ac44db84deb895071bfba0
       const newHome = new Home({
         title,
         description,
@@ -107,12 +104,9 @@ homePost.post("/posthome", (req, res) => {
         images,
         owner: owner_id,
         availability,
-<<<<<<< HEAD
         coordinates: parsedCoordinates, // use parsed
         transportInfo: parsedTransportInfo, // use parsed
         category,
-=======
->>>>>>> 1d21ac1fcc12929bc3ac44db84deb895071bfba0
       });
 
       await newHome.save();
