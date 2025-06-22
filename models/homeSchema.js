@@ -64,7 +64,41 @@ const homeSchema = new mongoose.Schema(
       default: "Available",
     },
 
-    //coordinates: { type: [Number], index: "2dsphere" },
+    coordinates: {
+      type: {
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true },
+      },
+      required: true,
+    },
+
+    category: {
+      type: String,
+      enum: ["General", "Student"],
+      require: false,
+      default: "General",
+    },
+
+    transportInfo: {
+      type: [
+        {
+          airport: {
+            name: { type: String, required: true },
+            distance: { type: String, required: true },
+          },
+          bustop: {
+            name: { type: String, required: true },
+            distance: { type: String, required: true },
+          },
+          trainStation: {
+            name: { type: String, required: true },
+            distance: { type: String, required: true },
+          },
+        },
+      ],
+      required: false,
+      default: [],
+    },
     reviews: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, require: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+  resetPasswordToken: { type: String },
+  resetPasswordExpire: { type: Date },
 });
 
 const User = mongoose.model("User", userSchema);

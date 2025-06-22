@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   phone: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+  resetPasswordTokenOwner: { type: String },
+  resetPasswordExpireOwner: { type: String },
 });
 
 const Owner = mongoose.model("owner", userSchema);

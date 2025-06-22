@@ -18,12 +18,16 @@ const property = require("./routes/property");
 const homeUpdate = require("./routes/homeUpdate");
 const panoramicUpload = require("./routes/panormicUpload");
 const payment = require("./routes/payment");
-const filterRoute = require("./routes/filterRoute");
 const manageCustomer = require("./routes/manageCustomer");
 const deleteProperty = require("./routes/deleteProperty");
-const transaction = require("./routes/transaction");
 const cancelBook = require("./routes/cancelBooking");
+const propertyBooking = require("./routes/propertyBooking");
+const resetPassUser = require("./routes/resetPasswordUser");
+const resetPassOwner = require("./routes/resetPasswordOwner");
+const favorite = require("./routes/Favorite");
+const checkWishList = require("./routes/checkWishList");
 
+//app initialized
 const app = express();
 
 //database connectiona
@@ -59,11 +63,16 @@ app.use("/", property);
 app.use("/", homeUpdate);
 app.use("/", panoramicUpload);
 app.use("/", payment);
-app.use("/", filterRoute);
+
 app.use("/", manageCustomer);
 app.use("/", deleteProperty);
-app.use("/", transaction);
+
 app.use("/", cancelBook);
+app.use("/", propertyBooking);
+app.use("/", resetPassUser);
+app.use("/", resetPassOwner);
+app.use("/", favorite);
+app.use("/", checkWishList);
 //home route
 
 const PORT = process.env.PORT;

@@ -20,16 +20,41 @@ const propertySchema = new mongoose.Schema(
     duration: {
       type: String,
       enum: ["short-term", "medium-term", "long-term"],
-      default: "short-term",
+      default: null,
     },
-    status: {
+    bookingStatus: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
     },
-    price: {
+    moveInData: {
+      type: Date,
+      default: null,
+    },
+
+    specialRequest: {
+      type: String,
+      default: "",
+    },
+    budget: {
       type: Number,
-      required: true,
+      default: 0,
+    },
+    termAgree: {
+      type: Boolean,
+      default: false,
+    },
+    fullName: {
+      type: String,
+      require: true,
+    },
+    email: {
+      type: String,
+      require: true,
+    },
+    contactPhone: {
+      type: String,
+      require: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -52,5 +77,5 @@ const propertySchema = new mongoose.Schema(
 // Adding indexes for faster lookups
 propertySchema.index({ property_id: 1 });
 
-const Property = mongoose.model("Property", propertyModule);
+const Property = mongoose.model("Property", propertySchema);
 module.exports = Property;

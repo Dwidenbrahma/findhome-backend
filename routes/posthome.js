@@ -28,12 +28,20 @@ homePost.post("/posthome", (req, res) => {
         bathrooms,
         guests,
         amenities,
-
         owner_id,
-        availability = null,
+        availability,
+        coordinates,
+        category,
+        transportInfo, // Default empty array for transportInfo
       } = req.body;
+      const parsedCoordinates =
+        typeof coordinates === "string" ? JSON.parse(coordinates) : coordinates;
+      const parsedTransportInfo =
+        typeof transportInfo === "string"
+          ? JSON.parse(transportInfo)
+          : transportInfo;
 
-      // Check for required fields
+      // Validate required fields
       if (
         !title ||
         !description ||
@@ -69,9 +77,13 @@ homePost.post("/posthome", (req, res) => {
           .json({ message: "Duration is required for rental properties." });
       }
 
-      // Handle file paths for images
+      // Handle file paths for images (assuming images are uploaded)
       const images = req.files ? req.files.map((file) => file.path) : [];
-      console.log(amenities);
+
+      // Log amenities to check the structure
+      console.log("Amenities:", amenities);
+
+      // Create new Home instance
       const newHome = new Home({
         title,
         description,
@@ -80,18 +92,19 @@ homePost.post("/posthome", (req, res) => {
         state,
         country,
         type,
-        transactionType: transactionType || null, // Ensure transactionType is set to null if not provided
+        transactionType: transactionType || null,
         duration: duration || null,
         price: Number(price),
         bedrooms: Number(bedrooms),
         bathrooms: Number(bathrooms),
         guests: Number(guests),
         amenities,
-
         images,
         owner: owner_id,
         availability,
-        // Check if coordinates exist
+        coordinates: parsedCoordinates, // use parsed
+        transportInfo: parsedTransportInfo, // use parsed
+        category,
       });
 
       await newHome.save();

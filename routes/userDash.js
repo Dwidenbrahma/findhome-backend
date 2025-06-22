@@ -4,9 +4,7 @@ require("dotenv").config();
 const userDash = express.Router();
 const User = require("../models/user");
 const Booking = require("../models/bookingScema");
-//const Home = require("../models/homeSchema");
 
-// Middleware to authenticate the token
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
@@ -17,7 +15,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = verifyToken(token); // Decode the token
+    const decoded = verifyToken(token);
     req.user = decoded; // Attach decoded data to request object
     next();
   } catch (err) {
@@ -25,7 +23,6 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// Protected route to fetch user dashboard
 userDash.get("/user/dashboard", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId; // Access user_id from decoded token
