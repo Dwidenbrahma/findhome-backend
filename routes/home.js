@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
+import Home from "../models/homeSchema.js";
+
 const home = express.Router();
-const Home = require("../models/homeSchema");
 
 home.get("/", async (req, res) => {
   try {
@@ -11,4 +12,4 @@ home.get("/", async (req, res) => {
   }
 });
 
-module.exports = home;
+export default home;

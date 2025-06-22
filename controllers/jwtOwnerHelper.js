@@ -1,5 +1,6 @@
-const jwtOwner = require("jsonwebtoken");
-require("dotenv").config();
+import dotenv from "dotenv";
+import jwtOwner from "jsonwebtoken";
+dotenv.config();
 
 const generateOwnerToken = (owner) => {
   return jwtOwner.sign(
@@ -15,4 +16,4 @@ const verifyOwnerToken = (ownerToken) => {
   return jwtOwner.verify(ownerToken, process.env.JWT_SECRET2);
 };
 
-module.exports = { generateOwnerToken, verifyOwnerToken };
+export { generateOwnerToken, verifyOwnerToken };

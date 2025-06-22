@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 const express = require("express");
 const review = express.Router();
 const Home = require("../models/homeSchema");
+=======
+// file: routes/review.js
+import express from "express";
+import Home from "../models/homeSchema.js";
+
+const review = express.Router();
+>>>>>>> 850cb95c587f3b84d8a18e7a083f381ee9c3b275
 
 review.post("/review", async (req, res) => {
   try {
@@ -30,4 +38,8 @@ review.post("/review", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 module.exports = review;
+=======
+export default review;
+>>>>>>> 850cb95c587f3b84d8a18e7a083f381ee9c3b275

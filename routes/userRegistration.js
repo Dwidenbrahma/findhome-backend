@@ -1,8 +1,10 @@
-const express = require("express");
+// file: routes/userRegistration.js
+import express from "express";
+import bcrypt from "bcryptjs";
+import User from "../models/user.js";
+import profileUpload from "../middleware/userProfileUpload.js";
+
 const userRegistration = express.Router();
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const profileUpload = require("../middleware/userProfileUpload");
 const SALTED = 10;
 
 userRegistration.post(
@@ -13,7 +15,7 @@ userRegistration.post(
       const { name, email, password, phone } = req.body;
       const profileImage = req.file ? req.file.path : null;
 
-      //Checking Existing user
+      // Checking Existing user
       const isExist = await User.findOne({ email });
       if (isExist) {
         return res
@@ -23,6 +25,7 @@ userRegistration.post(
 
       const hashPassword = await bcrypt.hash(password, SALTED);
       console.log(hashPassword);
+
       const newUser = new User({
         name,
         email,
@@ -31,18 +34,19 @@ userRegistration.post(
         phone,
       });
 
-      newUser.save();
-      res
-        .status(201)
-        .json({ message: "registration is successfull", userID: newUser._id });
+      await newUser.save();
+      res.status(201).json({
+        message: "Registration is successful",
+        userID: newUser._id,
+      });
 
       console.log(newUser + "Successfully inserted into the database ");
     } catch (error) {
       res
         .status(400)
-        .json({ message: `registration is unsuccessfull + ${error}` });
+        .json({ message: `Registration is unsuccessful + ${error}` });
     }
   }
 );
 
-module.exports = userRegistration;
+export default userRegistration;

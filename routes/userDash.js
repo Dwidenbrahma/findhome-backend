@@ -1,9 +1,15 @@
-const express = require("express");
-const { verifyToken } = require("../controllers/jwtHelper");
-require("dotenv").config();
+// file: routes/userDash.js
+import express from "express";
+import { verifyToken } from "../controllers/jwtHelper.js";
+import User from "../models/user.js";
+import Booking from "../models/bookingScema.js";
+
 const userDash = express.Router();
+<<<<<<< HEAD
 const User = require("../models/user");
 const Booking = require("../models/bookingScema");
+=======
+>>>>>>> 1d21ac1fcc12929bc3ac44db84deb895071bfba0
 
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -41,4 +47,4 @@ userDash.get("/user/dashboard", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = userDash;
+export default userDash;
