@@ -1,5 +1,5 @@
-import express from "express";
-import Booking from "../models/bookingScema.js";
+const express = require("express");
+const Booking = require("../models/bookingScema");
 
 const cancelBook = express.Router();
 
@@ -21,4 +21,4 @@ cancelBook.delete("/cancel/booking/:id", async (req, res) => {
   }
 });
 
-export default cancelBook;
+module.exports = cancelBook;

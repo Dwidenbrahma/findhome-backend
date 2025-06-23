@@ -1,5 +1,5 @@
-import multer from "multer";
-import path from "path";
+const multer = require("multer");
+const path = require("path");
 
 // Function to check file type
 function checkFileType(file, cb) {
@@ -36,4 +36,4 @@ const panoramicView = multer({
   },
 }).array("panoramic", 10);
 
-export default panoramicView;
+module.exports = panoramicView;

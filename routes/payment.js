@@ -1,8 +1,8 @@
-import express from "express";
-import Stripe from "stripe";
-import jwt from "jsonwebtoken";
-import Payment from "../models/paymentSchema.js";
-import dotenv from "dotenv";
+const express = require("express");
+const Stripe = require("stripe");
+const jwt = require("jsonwebtoken");
+const Payment = require("../models/paymentSchema");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -37,11 +37,10 @@ payment.post("/payment", async (req, res) => {
 
     const paymentRecord = new Payment({
       amount,
-      propertyId: property_id,
-      userId: decoded.userId,
-      email: user_email,
+      property_id,
+      user_id: decoded.userId,
+      user_email,
       status: "created",
-      paymentIntentId: paymentIntent.id,
     });
 
     await paymentRecord.save();
@@ -53,4 +52,4 @@ payment.post("/payment", async (req, res) => {
   }
 });
 
-export default payment;
+module.exports = payment;

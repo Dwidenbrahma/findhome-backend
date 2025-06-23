@@ -1,13 +1,13 @@
-import User from "../models/user.js";
-import crypto from "crypto";
-import nodemailer from "nodemailer";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+const User = require("../models/user");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 // Forgot Password
-export const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -28,7 +28,7 @@ export const forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    const resetUrl = `https://findhome-backend.onrender.com/reset-password/${resetToken}`;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -45,6 +45,7 @@ export const forgotPassword = async (req, res) => {
         <p>You requested a password reset.</p>
         <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 15 minutes.</p>
       `,
+      from: process.env.GMAIL_NAME,
     });
 
     res.status(200).json({ message: "Reset email sent" });
@@ -55,7 +56,7 @@ export const forgotPassword = async (req, res) => {
 };
 
 // Reset Password
-export const resetPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
@@ -86,4 +87,9 @@ export const resetPassword = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
+};
+
+module.exports = {
+  forgotPassword,
+  resetPassword,
 };

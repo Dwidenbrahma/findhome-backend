@@ -1,6 +1,6 @@
-import express from "express";
-import panoramic from "../middleware/panoramicUpload.js";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const panoramic = require("../middleware/panoramicUpload");
+const Home = require("../models/homeSchema");
 
 const panoramicView = express.Router();
 
@@ -39,4 +39,4 @@ panoramicView.patch("/owner/panoramic/:id", panoramic, async (req, res) => {
   }
 });
 
-export default panoramicView;
+module.exports = panoramicView;

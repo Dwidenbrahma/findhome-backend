@@ -1,8 +1,7 @@
-// file: routes/userRegistration.js
-import express from "express";
-import bcrypt from "bcryptjs";
-import User from "../models/user.js";
-import profileUpload from "../middleware/userProfileUpload.js";
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const User = require("../models/user");
+const profileUpload = require("../middleware/userProfileUpload");
 
 const userRegistration = express.Router();
 const SALTED = 10;
@@ -49,4 +48,4 @@ userRegistration.post(
   }
 );
 
-export default userRegistration;
+module.exports = userRegistration;

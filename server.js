@@ -1,45 +1,40 @@
-import dotenv from "dotenv";
-dotenv.config();
+require("dotenv").config();
 
-import express from "express";
-import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// Get __dirname in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
 // DB Connection
-import connectDB from "./config/db.js";
+const connectDB = require("./config/db");
 
 // Routes
-import home from "./routes/home.js";
-import posthome from "./routes/posthome.js";
-import userRegistration from "./routes/userRegistration.js";
-import loginRoute from "./routes/login.js";
-import homeInfo from "./routes/homeInfo.js";
-import userDash from "./routes/userDash.js";
-import ownerRegistration from "./routes/ownerRegistration.js";
-import homeBooking from "./routes/homeBooking.js";
-import ownerDash from "./routes/ownerDash.js";
-import OwnerLogin from "./routes/ownerLogin.js";
-import review from "./routes/review.js";
-import property from "./routes/property.js";
-import homeUpdate from "./routes/homeUpdate.js";
-import panoramicUpload from "./routes/panormicUpload.js";
-import payment from "./routes/payment.js";
-import manageCustomer from "./routes/manageCustomer.js";
-import deleteProperty from "./routes/deleteProperty.js";
-import cancelBook from "./routes/cancelBooking.js";
-import propertyBooking from "./routes/propertyBooking.js";
-import resetPassUser from "./routes/resetPasswordUser.js";
-import resetPassOwner from "./routes/resetPasswordOwner.js";
-import favorite from "./routes/Favorite.js";
-import checkWishList from "./routes/checkWishList.js";
+const home = require("./routes/home");
+const posthome = require("./routes/posthome");
+const userRegistration = require("./routes/userRegistration");
+const loginRoute = require("./routes/login");
+const homeInfo = require("./routes/homeInfo");
+const userDash = require("./routes/userDash");
+const ownerRegistration = require("./routes/ownerRegistration");
+const homeBooking = require("./routes/homeBooking");
+const ownerDash = require("./routes/ownerDash");
+const OwnerLogin = require("./routes/ownerLogin");
+const review = require("./routes/review");
+const property = require("./routes/property");
+const homeUpdate = require("./routes/homeUpdate");
+const panoramicUpload = require("./routes/panormicUpload");
+const payment = require("./routes/payment");
+const manageCustomer = require("./routes/manageCustomer");
+const deleteProperty = require("./routes/deleteProperty");
+const cancelBook = require("./routes/cancelBooking");
+const propertyBooking = require("./routes/propertyBooking");
+const resetPassUser = require("./routes/resetPasswordUser");
+const resetPassOwner = require("./routes/resetPasswordOwner");
+const favorite = require("./routes/Favorite");
+const checkWishList = require("./routes/checkWishList");
 
-// App initialization
+// __dirname is available in CommonJS
 const app = express();
+
 connectDB();
 
 // Middleware
@@ -49,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Static folders
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.static(path.join(__dirname, "/client/dist")));
+app.use(express.static(path.join(__dirname, "client/dist")));
 
 // Backend Routes
 app.use("/", home);
@@ -78,11 +73,11 @@ app.use("/", checkWishList);
 
 // React frontend fallback route
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/dist/index.html"));
+  res.sendFile(path.join(__dirname, "client/dist/index.html"));
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

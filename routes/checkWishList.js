@@ -1,6 +1,6 @@
-import express from "express";
-import Fav from "../models/favorite.js";
-import { verifyToken } from "../controllers/jwtHelper.js";
+const express = require("express");
+const Fav = require("../models/favorite");
+const { verifyToken } = require("../controllers/jwtHelper");
 
 const checkWishList = express.Router();
 
@@ -41,4 +41,4 @@ checkWishList.get("/find-wish-list", authenticateToken, async (req, res) => {
   }
 });
 
-export default checkWishList;
+module.exports = checkWishList;

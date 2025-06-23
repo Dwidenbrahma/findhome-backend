@@ -1,13 +1,17 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", require: true },
-  user_email: { type: String, require: true },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  user_email: { type: String, required: true },
 
   property_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Home",
-    require: true,
+    required: true,
   },
   booking: {
     type: mongoose.Schema.Types.ObjectId,
@@ -26,4 +30,5 @@ const paymentSchema = new mongoose.Schema({
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);
-export default Payment;
+
+module.exports = Payment;

@@ -1,9 +1,8 @@
-// file: routes/login.js
-import express from "express";
-import User from "../models/user.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+const express = require("express");
+const User = require("../models/user");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -18,7 +17,9 @@ login.post("/login", async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid username and password" });
     }
+
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid username and password" });
     }
@@ -30,8 +31,8 @@ login.post("/login", async (req, res) => {
 
     res.send({ token });
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json({ message: err.message || "Server error" });
   }
 });
 
-export default login;
+module.exports = login;

@@ -1,13 +1,13 @@
-// file: routes/userDash.js
-import express from "express";
-import { verifyToken } from "../controllers/jwtHelper.js";
-import User from "../models/user.js";
-import Booking from "../models/bookingScema.js";
+const express = require("express");
+const { verifyToken } = require("../controllers/jwtHelper");
+const User = require("../models/user");
+const Booking = require("../models/bookingScema");
 
 const userDash = express.Router();
 
 const authenticateToken = (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const authHeader = req.header("Authorization") || req.header("authorization");
+  const token = authHeader ? authHeader.replace("Bearer ", "") : null;
 
   if (!token) {
     return res
@@ -42,4 +42,4 @@ userDash.get("/user/dashboard", authenticateToken, async (req, res) => {
   }
 });
 
-export default userDash;
+module.exports = userDash;

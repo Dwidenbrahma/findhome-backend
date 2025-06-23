@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const homeSchema = new mongoose.Schema(
   {
@@ -18,12 +18,10 @@ const homeSchema = new mongoose.Schema(
       type: String,
       enum: ["rent", "buy"],
       required: function () {
-        // Required for everything except Hotels
         return this.type !== "Hotel";
       },
       validate: {
         validator: function (value) {
-          // If it's a Hotel, it must be "rent"
           if (this.type === "Hotel" && value === "buy") {
             return false;
           }
@@ -49,9 +47,9 @@ const homeSchema = new mongoose.Schema(
     bedrooms: { type: Number, required: true },
     bathrooms: { type: Number, required: true },
     guests: { type: Number, required: true },
-    amenities: { type: [String], default: [] }, // Default empty array
+    amenities: { type: [String], default: [] },
     images: { type: [String], default: [] },
-    panoramic: { type: [String], default: [] }, // Default empty array
+    panoramic: { type: [String], default: [] },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "owner",
@@ -75,7 +73,7 @@ const homeSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: ["General", "Student"],
-      require: false,
+      required: false,
       default: "General",
     },
 
@@ -99,10 +97,10 @@ const homeSchema = new mongoose.Schema(
       required: false,
       default: [],
     },
+
     reviews: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        // rating: { type: Number, required: true },
         comment: { type: String },
         date: { type: Date, default: Date.now },
       },
@@ -112,4 +110,5 @@ const homeSchema = new mongoose.Schema(
 );
 
 const Home = mongoose.model("Home", homeSchema);
-export default Home;
+
+module.exports = Home;

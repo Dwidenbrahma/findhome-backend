@@ -1,13 +1,13 @@
-import Owner from "../models/owner.js";
-import crypto from "crypto";
-import nodemailer from "nodemailer";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+const Owner = require("../models/owner");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 // Forgot Password
-export const forgotPasswordOwner = async (req, res) => {
+const forgotPasswordOwner = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -47,6 +47,7 @@ export const forgotPasswordOwner = async (req, res) => {
         <p>You requested a password reset.</p>
         <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 15 minutes.</p>
       `,
+      from: process.env.GMAIL_NAME,
     });
 
     res.status(200).json({ message: "Reset email sent" });
@@ -57,7 +58,7 @@ export const forgotPasswordOwner = async (req, res) => {
 };
 
 // Reset Password
-export const resetPasswordOwner = async (req, res) => {
+const resetPasswordOwner = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
@@ -89,4 +90,9 @@ export const resetPasswordOwner = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
+};
+
+module.exports = {
+  forgotPasswordOwner,
+  resetPasswordOwner,
 };

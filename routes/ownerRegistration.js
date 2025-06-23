@@ -1,10 +1,9 @@
-// file: routes/ownerRegistration.js
-import express from "express";
-import jwt from "jsonwebtoken";
-import Owner from "../models/owner.js";
-import ownerprofile from "../middleware/ownerProfileUpload.js";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const Owner = require("../models/owner");
+const ownerprofile = require("../middleware/ownerProfileUpload");
+const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -19,7 +18,6 @@ ownerRegistraion.post(
       let { name, email, password, phone } = req.body;
       const profileImage = req.file ? req.file.path : null;
 
-      // Check if the email already exists
       const isExist = await Owner.findOne({ email });
       if (isExist) {
         return res
@@ -37,7 +35,7 @@ ownerRegistraion.post(
         phone,
       });
 
-      await newOwner.save(); // Ensure saving is awaited
+      await newOwner.save();
       res.status(200).json({ message: "Success" });
     } catch (err) {
       res.status(500).json({ message: `Internal Server Error: ${err}` });
@@ -45,4 +43,4 @@ ownerRegistraion.post(
   }
 );
 
-export default ownerRegistraion;
+module.exports = ownerRegistraion;

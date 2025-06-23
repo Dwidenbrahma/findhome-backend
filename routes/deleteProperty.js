@@ -1,5 +1,5 @@
-import express from "express";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const Home = require("../models/homeSchema");
 
 const removeProperty = express.Router();
 
@@ -22,4 +22,4 @@ removeProperty.delete("/owner/delete/:id", async (req, res) => {
   }
 });
 
-export default removeProperty;
+module.exports = removeProperty;

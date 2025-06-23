@@ -1,6 +1,5 @@
-// file: middleware/profileUpload.js
-import multer from "multer";
-import path from "path";
+const multer = require("multer");
+const path = require("path");
 
 // Function to check file type
 function checkFileType(file, cb) {
@@ -21,7 +20,7 @@ const profileStorage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(
       null,
-      file.filename + "-" + Date.now() + path.extname(file.originalname)
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
@@ -35,4 +34,4 @@ const profileUpload = multer({
   },
 });
 
-export default profileUpload;
+module.exports = profileUpload;

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const propertySchema = new mongoose.Schema(
   {
@@ -31,7 +31,6 @@ const propertySchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-
     specialRequest: {
       type: String,
       default: "",
@@ -46,15 +45,15 @@ const propertySchema = new mongoose.Schema(
     },
     fullName: {
       type: String,
-      require: true,
+      required: true,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
     },
     contactPhone: {
       type: String,
-      require: true,
+      required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -70,11 +69,11 @@ const propertySchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Automatically manage createdAt and updatedAt
+    timestamps: true,
   }
 );
 
-// Adding indexes for faster lookups
+// Index for optimization
 propertySchema.index({ property_id: 1 });
 
 const Property = mongoose.model("Property", propertySchema);

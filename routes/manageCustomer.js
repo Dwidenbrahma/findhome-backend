@@ -1,8 +1,8 @@
-import express from "express";
-import Booking from "../models/bookingScema.js";
-import Home from "../models/homeSchema.js";
-import User from "../models/user.js";
-import { verifyOwnerToken } from "../controllers/jwtOwnerHelper.js";
+const express = require("express");
+const Booking = require("../models/bookingScema");
+const Home = require("../models/homeSchema");
+const User = require("../models/user");
+const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
 
 const manageCustomer = express.Router();
 
@@ -63,4 +63,4 @@ manageCustomer.get("/owner/manage", authenticateOwner, async (req, res) => {
   }
 });
 
-export default manageCustomer;
+module.exports = manageCustomer;

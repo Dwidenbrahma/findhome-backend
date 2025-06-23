@@ -1,6 +1,6 @@
 // file: routes/homeInfo.js
-import express from "express";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const Home = require("../models/homeSchema");
 
 const homeInfo = express.Router();
 
@@ -20,4 +20,4 @@ homeInfo.get("/info/:id", async (req, res) => {
   }
 });
 
-export default homeInfo;
+module.exports = homeInfo;

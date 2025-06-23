@@ -1,9 +1,5 @@
-// sendMail.js
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-
 const nodemailer = require("nodemailer");
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -17,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Function to send email
-export const sendEmail = (to, subject, text, html) => {
+const sendEmail = (to, subject, text, html) => {
   const mailOptions = {
     from: process.env.GMAIL_NAME,
     to,
@@ -36,3 +32,5 @@ export const sendEmail = (to, subject, text, html) => {
     });
   });
 };
+
+module.exports = { sendEmail };

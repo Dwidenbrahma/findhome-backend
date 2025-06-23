@@ -1,5 +1,5 @@
-import express from "express";
-import Property from "../models/propertySchema.js";
+const express = require("express");
+const Property = require("../models/propertySchema");
 
 const propertyBooking = express.Router();
 
@@ -46,4 +46,4 @@ propertyBooking.post("/property/book", async (req, res) => {
   }
 });
 
-export default propertyBooking;
+module.exports = propertyBooking;

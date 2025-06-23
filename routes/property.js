@@ -1,7 +1,7 @@
-import express from "express";
-import Home from "../models/homeSchema.js";
-import { verifyOwnerToken } from "../controllers/jwtOwnerHelper.js";
-import dotenv from "dotenv";
+const express = require("express");
+const Home = require("../models/homeSchema");
+const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -35,4 +35,4 @@ property.get("/owner/properties", async (req, res) => {
   }
 });
 
-export default property;
+module.exports = property;

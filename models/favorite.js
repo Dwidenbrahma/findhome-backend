@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const FavoriteSchema = new mongoose.Schema({
   property_id: { type: mongoose.Schema.Types.ObjectId, ref: "Home" },
@@ -7,4 +7,4 @@ const FavoriteSchema = new mongoose.Schema({
 
 const Fav = mongoose.model("Favorite", FavoriteSchema);
 
-export default Fav;
+module.exports = Fav;

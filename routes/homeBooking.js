@@ -1,9 +1,9 @@
-import express from "express";
-import jwt from "jsonwebtoken";
-import Booking from "../models/bookingScema.js";
-import User from "../models/user.js";
-import Home from "../models/homeSchema.js";
-import { sendEmail } from "../connect/sendMail.js";
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const Booking = require("../models/bookingScema");
+const User = require("../models/user");
+const Home = require("../models/homeSchema");
+const { sendEmail } = require("../connect/sendMail");
 
 const tempmail = "dwiden223@gmail.com";
 const homeBooking = express.Router();
@@ -95,4 +95,4 @@ homeBooking.post("/reserve/:id", authenticateToken, async (req, res) => {
   }
 });
 
-export default homeBooking;
+module.exports = homeBooking;

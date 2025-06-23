@@ -1,5 +1,5 @@
-import express from "express";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const Home = require("../models/homeSchema");
 
 const home = express.Router();
 
@@ -12,4 +12,4 @@ home.get("/", async (req, res) => {
   }
 });
 
-export default home;
+module.exports = home;

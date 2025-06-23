@@ -1,5 +1,5 @@
-import express from "express";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const Home = require("../models/homeSchema");
 
 const review = express.Router();
 
@@ -30,4 +30,4 @@ review.post("/review", async (req, res) => {
   }
 });
 
-export default review;
+module.exports = review;

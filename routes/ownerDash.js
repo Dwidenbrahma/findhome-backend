@@ -1,8 +1,8 @@
-// file: routes/ownerDash.js
-import express from "express";
-import Owner from "../models/owner.js";
-import { verifyOwnerToken } from "../controllers/jwtOwnerHelper.js";
-import dotenv from "dotenv";
+const express = require("express");
+const Owner = require("../models/owner");
+const Home = require("../models/homeSchema"); // <- You forgot to import this in the original code
+const { verifyOwnerToken } = require("../controllers/jwtOwnerHelper");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ const authenticateOwner = (req, res, next) => {
     req.owner = decode;
     next();
   } catch (err) {
-    console.error("Token verification failed:", err); // log the error for better debugging
+    console.error("Token verification failed:", err);
     res
       .status(500)
       .json({ message: "Internal Server Error", error: err.message });
@@ -42,11 +42,11 @@ ownerDash.get("/owner/dash", authenticateOwner, async (req, res) => {
 
     res.status(200).json({ admin, totalProperties });
   } catch (err) {
-    console.error("Error fetching owner data:", err); // log the error for better debugging
+    console.error("Error fetching owner data:", err);
     res
       .status(500)
       .json({ message: "Something went wrong", error: err.message });
   }
 });
 
-export default ownerDash;
+module.exports = ownerDash;

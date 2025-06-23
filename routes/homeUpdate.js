@@ -1,5 +1,5 @@
-import express from "express";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const Home = require("../models/homeSchema");
 
 const homeUpdate = express.Router();
 
@@ -49,4 +49,4 @@ homeUpdate.patch("/owner/update/:id", async (req, res) => {
   }
 });
 
-export default homeUpdate;
+module.exports = homeUpdate;

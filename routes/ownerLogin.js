@@ -1,9 +1,8 @@
-// file: routes/ownerLogin.js
-import express from "express";
-import jwtOwner from "jsonwebtoken";
-import Owner from "../models/owner.js";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+const express = require("express");
+const jwtOwner = require("jsonwebtoken");
+const Owner = require("../models/owner");
+const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -12,7 +11,7 @@ const OwnerLogin = express.Router();
 OwnerLogin.post("/owner/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Request Body:", req.body); // Logging request body
+    console.log("Request Body:", req.body);
 
     const ownerData = await Owner.findOne({ email });
 
@@ -32,11 +31,11 @@ OwnerLogin.post("/owner/login", async (req, res) => {
 
     res.send({ ownerToken });
   } catch (error) {
-    console.error("Error during login:", error); // Logging error
+    console.error("Error during login:", error);
     res
       .status(500)
       .json({ message: "Internal server error, please try again later" });
   }
 });
 
-export default OwnerLogin;
+module.exports = OwnerLogin;

@@ -1,7 +1,6 @@
-// file: routes/homePost.js
-import express from "express";
-import homeUpload from "../middleware/homeUpload.js";
-import Home from "../models/homeSchema.js";
+const express = require("express");
+const homeUpload = require("../middleware/homeUpload");
+const Home = require("../models/homeSchema");
 
 const homePost = express.Router();
 
@@ -10,9 +9,6 @@ homePost.post("/posthome", (req, res) => {
     if (err) {
       return res.status(400).json({ message: err.message });
     }
-
-    console.log("Form Data:", req.body);
-    console.log("Uploaded Files:", req.files);
 
     try {
       const {
@@ -23,8 +19,6 @@ homePost.post("/posthome", (req, res) => {
         state,
         country,
         type,
-        transactionType,
-        duration,
         price,
         bedrooms,
         bathrooms,
@@ -34,16 +28,19 @@ homePost.post("/posthome", (req, res) => {
         availability,
         coordinates,
         category,
-        transportInfo, // Default empty array for transportInfo
+        transactionType: originalTransactionType,
+        duration,
+        transportInfo,
       } = req.body;
+
       const parsedCoordinates =
         typeof coordinates === "string" ? JSON.parse(coordinates) : coordinates;
+
       const parsedTransportInfo =
         typeof transportInfo === "string"
           ? JSON.parse(transportInfo)
           : transportInfo;
 
-      // Validate required fields
       if (
         !title ||
         !description ||
@@ -63,13 +60,13 @@ homePost.post("/posthome", (req, res) => {
           .json({ message: "Please fill in all required fields." });
       }
 
+      let transactionType = originalTransactionType;
       if (type === "Hotel") {
         if (transactionType && transactionType !== "rent") {
           return res
             .status(400)
             .json({ message: "Hotels can only be rented." });
         }
-        // If it's a hotel, set default transactionType to "rent"
         transactionType = "rent";
       }
 
@@ -79,13 +76,8 @@ homePost.post("/posthome", (req, res) => {
           .json({ message: "Duration is required for rental properties." });
       }
 
-      // Handle file paths for images (assuming images are uploaded)
-      const images = req.files ? req.files.map((file) => file.path) : [];
+      const images = req.files?.map((file) => file.path) || [];
 
-      // Log amenities to check the structure
-      console.log("Amenities:", amenities);
-
-      // Create new Home instance
       const newHome = new Home({
         title,
         description,
@@ -104,16 +96,17 @@ homePost.post("/posthome", (req, res) => {
         images,
         owner: owner_id,
         availability,
-        coordinates: parsedCoordinates, // use parsed
-        transportInfo: parsedTransportInfo, // use parsed
+        coordinates: parsedCoordinates,
+        transportInfo: parsedTransportInfo,
         category,
       });
 
       await newHome.save();
-      console.log("Successfully inserted");
-      res
-        .status(201)
-        .json({ message: "Home successfully posted", home: newHome });
+
+      res.status(201).json({
+        message: "Home successfully posted",
+        home: newHome,
+      });
     } catch (error) {
       console.error("Error saving home:", error);
       res.status(500).json({ message: error.message });
@@ -121,4 +114,4 @@ homePost.post("/posthome", (req, res) => {
   });
 });
 
-export default homePost;
+module.exports = homePost;
