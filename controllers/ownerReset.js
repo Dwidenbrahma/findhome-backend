@@ -28,8 +28,10 @@ const forgotPasswordOwner = async (req, res) => {
 
     await user.save();
 
+    const vercelURL = "https://findhome-frontend.vercel.app/";
+
     // Reset URL
-    const resetUrl = `http://localhost:5173/owner/reset-password/${OwnerResetToken}`;
+    const resetUrl = `${vercelURL}/owner/reset-password/${OwnerResetToken}`;
 
     // Email setup
     const transporter = nodemailer.createTransport({

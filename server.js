@@ -38,13 +38,19 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://findhome-frontend.vercel.app", // allow only your frontend
+    credentials: true, // if you plan to use cookies/auth headers
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static folders
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.static(path.join(__dirname, "client/dist")));
+//app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // Backend Routes
 app.use("/", home);
@@ -72,9 +78,9 @@ app.use("/", favorite);
 app.use("/", checkWishList);
 
 // React frontend fallback route
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/dist/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+// });
 
 // Start server
 const PORT = process.env.PORT || 4000;

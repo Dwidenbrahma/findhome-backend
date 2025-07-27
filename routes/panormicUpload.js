@@ -19,11 +19,12 @@ panoramicView.patch("/owner/panoramic/:id", panoramic, async (req, res) => {
       return res.status(400).json({ message: "No files uploaded" });
     }
 
-    const imagePaths = req.files.map((file) => file.path);
+    // For Cloudinary, use file.path or secure_url
+    const imagePaths = req.files.map(
+      (file) => file.path || file.secure_url || file.url
+    );
 
-    if (!Array.isArray(home.panoramic)) {
-      home.panoramic = [];
-    }
+    home.panoramic = Array.isArray(home.panoramic) ? home.panoramic : [];
 
     home.panoramic.push(...imagePaths);
 

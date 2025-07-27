@@ -28,7 +28,12 @@ const forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `https://findhome-backend.onrender.com/reset-password/${resetToken}`;
+    //const localFrontendURL = "http://localhost:5173"; // ✅ Use frontend port
+    const vercelURL = "https://findhome-frontend.vercel.app/";
+    const resetUrl = `${vercelURL}/reset-password/${resetToken}`;
+
+    //const RenderUrl = "https://findhome-backend.onrender.com/reset-password";
+    //const resetUrl = `${localURL}/reset-password/${resetToken}`;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
