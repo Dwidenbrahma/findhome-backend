@@ -1,6 +1,6 @@
 # 🏡 FindHome - Property Booking and Management Platform
 
-A full-stack application that enables users to rent or buy properties, and owners to list and manage properties. Features include authentication, payments via Stripe, reviews, panoramic room views, wishlist, and admin dashboards.
+A full-stack application that enables users to rent or buy properties, and owners to list and manage properties. Features include authentication, reviews, panoramic room views, wishlist, and admin dashboards.
 
 ---
 
